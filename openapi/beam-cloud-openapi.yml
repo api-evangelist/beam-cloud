@@ -1,0 +1,292 @@
+openapi: 3.0.1
+info:
+  title: Beam API
+  description: >-
+    Specification of the documented Beam (beam.cloud) HTTP surfaces: synchronous
+    invocation of deployed web endpoints, asynchronous task submission to deployed
+    task queues, and the control-plane Tasks API for querying status and cancelling
+    tasks. Beam deployments are created from Python with the Beam SDK/CLI; this spec
+    covers the resulting HTTP invocation and management patterns only.
+  termsOfService: https://www.beam.cloud/terms
+  contact:
+    name: Beam Support
+    url: https://docs.beam.cloud
+  version: '2.0'
+servers:
+  - url: https://app.beam.cloud
+    description: Invocation host for deployed endpoints and task queues (named or id path)
+  - url: https://api.beam.cloud
+    description: Control-plane host for the Tasks management API
+paths:
+  /endpoint/{name}:
+    post:
+      operationId: invokeNamedEndpoint
+      tags:
+        - Web Endpoints
+      summary: Invoke a deployed web endpoint by name
+      description: >-
+        Synchronously invoke a deployed Python function exposed as a web endpoint,
+        addressed by its deployment name on the shared invocation host. Endpoints
+        are intended for synchronous work that completes within roughly 180 seconds.
+        A deployment is also reachable at its versioned app subdomain
+        (https://{name}-{id}-v{n}.app.beam.cloud).
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: The name of the deployed endpoint.
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+            example:
+              x: 12
+      responses:
+        '200':
+          description: OK - the function return value, serialized as JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+        - bearerAuth: []
+  /endpoint/{name}/v{version}:
+    post:
+      operationId: invokeNamedEndpointVersion
+      tags:
+        - Web Endpoints
+      summary: Invoke a specific version of a deployed web endpoint
+      description: >-
+        Invoke a specific deployment version of a named web endpoint, e.g.
+        /endpoint/zonos-tts/v1.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: The name of the deployed endpoint.
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          description: The deployment version number.
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK - the function return value, serialized as JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+        - bearerAuth: []
+  /endpoint/id/{id}:
+    post:
+      operationId: invokeEndpointById
+      tags:
+        - Web Endpoints
+      summary: Invoke a deployed web endpoint by id
+      description: >-
+        Synchronously invoke a deployed endpoint addressed by its unique deployment
+        id, e.g. /endpoint/id/55108039-e3bf-409b-bad5-f4982b2f1c02. Commonly used for
+        temporary or ephemeral deployments.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique id of the deployment.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK - the function return value, serialized as JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+        - bearerAuth: []
+  /taskqueue/{name}:
+    post:
+      operationId: submitTaskByName
+      tags:
+        - Task Queues
+      summary: Submit an asynchronous task to a deployed task queue
+      description: >-
+        Enqueue an asynchronous task on a deployed TaskQueue, addressed by its name on
+        the shared invocation host (a deployment is equivalently reachable at its app
+        subdomain https://{name}-{id}.app.beam.cloud). The call returns immediately
+        with a task_id; the result is retrieved later from the Tasks management API or
+        delivered to a configured callback_url webhook. Use task queues for long-running
+        work beyond the synchronous endpoint window.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: The name of the deployed task queue.
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Task accepted and enqueued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSubmitResponse'
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+        - bearerAuth: []
+  /v2/task/{task_id}/:
+    get:
+      operationId: getTaskStatus
+      tags:
+        - Tasks
+      summary: Get task status and metadata
+      description: >-
+        Retrieve the current status, timing, container details, and outputs for a
+        previously submitted task. Served by the control-plane host api.beam.cloud.
+      servers:
+        - url: https://api.beam.cloud
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          description: The unique id of the task.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Task status and metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+        '404':
+          description: Task not found.
+      security:
+        - bearerAuth: []
+  /v2/task/cancel/:
+    delete:
+      operationId: cancelTasks
+      tags:
+        - Tasks
+      summary: Cancel one or more tasks
+      description: >-
+        Cancel a list of running or pending tasks by id. Served by the control-plane
+        host api.beam.cloud.
+      servers:
+        - url: https://api.beam.cloud
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - task_ids
+            example:
+              task_ids:
+                - 55108039-e3bf-409b-bad5-f4982b2f1c02
+      responses:
+        '200':
+          description: Tasks cancelled.
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Beam API token passed as `Authorization: Bearer <TOKEN>`. Generate tokens in
+        the Beam dashboard or with the Beam CLI.
+  schemas:
+    TaskSubmitResponse:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+          description: Identifier used to poll status or correlate the callback.
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          description: Current task state.
+          enum:
+            - PENDING
+            - RUNNING
+            - COMPLETE
+            - ERROR
+            - CANCELLED
+            - TIMEOUT
+        outputs:
+          type: array
+          description: Output artifacts (e.g. files with downloadable URLs).
+          items:
+            type: object
+            additionalProperties: true
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        expires_in:
+          type: integer
+          description: Seconds until the outputs expire.
+security:
+  - bearerAuth: []

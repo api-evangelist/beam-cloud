@@ -1,0 +1,144 @@
+aid: beam-cloud
+url: https://raw.githubusercontent.com/api-evangelist/beam-cloud/refs/heads/main/apis.yml
+name: Beam
+kind: company
+description: Beam (beam.cloud) is a serverless GPU and Python cloud-runtime platform.
+  You write ordinary Python, decorate it, and Beam deploys it as a web endpoint, a
+  task queue, a scheduled job, or a secure sandbox running on on-demand CPU and GPU
+  containers with per-second billing, rapid cold starts, and automatic scaling.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Serverless
+- GPU
+- Python
+- Inference
+- Containers
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: beam-cloud:beam-cloud-web-endpoints-api
+  name: Beam Web Endpoints API
+  tags:
+  - Web Endpoints
+  - Function Invocation
+  - Serverless
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.beam.cloud/v2/endpoint/overview
+  baseURL: https://app.beam.cloud
+  properties:
+  - url: https://docs.beam.cloud/v2/endpoint/overview
+    type: Documentation
+  - url: https://docs.beam.cloud/v2/getting-started/quickstart
+    type: APIReference
+  - url: openapi/beam-cloud-openapi.yml
+    type: OpenAPI
+  - url: collections/beam-cloud.postman_collection.json
+    type: PostmanCollection
+  - url: collections/beam-cloud.opencollection.json
+    type: OpenCollection
+  - url: asyncapi/beam-cloud-asyncapi.yml
+    type: AsyncAPI
+  - url: https://github.com/beam-cloud/beta9
+    type: GitHub
+  description: Synchronous invocation of deployed Python functions exposed as REST web
+    endpoints. Each deployment is reachable both by a versioned app subdomain
+    (https://{name}-{id}-v{n}.app.beam.cloud) and by a named or id path on the shared
+    host (https://app.beam.cloud/endpoint/{name} or /endpoint/id/{id}). Endpoints are
+    for synchronous work completing within ~180 seconds; Bearer token auth.
+- aid: beam-cloud:beam-cloud-task-queues-api
+  name: Beam Task Queues API
+  tags:
+  - Task Queues
+  - Async
+  - Background Jobs
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.beam.cloud/v2/task-queue/running-tasks
+  baseURL: https://api.beam.cloud
+  properties:
+  - url: https://docs.beam.cloud/v2/task-queue/running-tasks
+    type: Documentation
+  - url: https://docs.beam.cloud/v2/task-queue/query-status
+    type: APIReference
+  - url: openapi/beam-cloud-openapi.yml
+    type: OpenAPI
+  - url: collections/beam-cloud.postman_collection.json
+    type: PostmanCollection
+  - url: collections/beam-cloud.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/beam-cloud/beta9
+    type: GitHub
+  description: Asynchronous task submission for long-running work. POST to a deployed
+    task-queue app returns a task_id; results and state are then polled from the
+    control-plane Tasks API (GET https://api.beam.cloud/v2/task/{task_id}/) or
+    delivered to a configured callback_url webhook.
+- aid: beam-cloud:beam-cloud-tasks-management-api
+  name: Beam Tasks Management API
+  tags:
+  - Tasks
+  - Management
+  - Deployments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status
+  baseURL: https://api.beam.cloud
+  properties:
+  - url: https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status
+    type: Documentation
+  - url: https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-cancel
+    type: APIReference
+  - url: openapi/beam-cloud-openapi.yml
+    type: OpenAPI
+  - url: collections/beam-cloud.postman_collection.json
+    type: PostmanCollection
+  - url: collections/beam-cloud.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/beam-cloud/beta9
+    type: GitHub
+  description: Control-plane REST API on api.beam.cloud for retrieving task status and
+    metadata (GET /v2/task/{task_id}/) and cancelling one or more running tasks
+    (DELETE /v2/task/cancel/). Bearer token auth; used to manage deployments and the
+    lifecycle of async invocations.
+- aid: beam-cloud:beam-cloud-sandboxes-volumes-api
+  name: Beam Sandboxes and Volumes API
+  tags:
+  - Sandboxes
+  - Volumes
+  - Code Execution
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.beam.cloud/v2/sandbox/overview
+  baseURL: https://app.beam.cloud
+  properties:
+  - url: https://docs.beam.cloud/v2/sandbox/overview
+    type: Documentation
+  - url: https://docs.beam.cloud/v2/data/volume
+    type: APIReference
+  - url: openapi/beam-cloud-openapi.yml
+    type: OpenAPI
+  - url: collections/beam-cloud.postman_collection.json
+    type: PostmanCollection
+  - url: collections/beam-cloud.opencollection.json
+    type: OpenCollection
+  - url: https://github.com/beam-cloud/beta9
+    type: GitHub
+  description: Secure, programmable sandbox containers for arbitrary code execution
+    (filesystem and process operations) plus distributed storage Volumes and mounted
+    external S3 buckets. Driven primarily through the Beam Python/TypeScript SDK and
+    CLI on top of the same container runtime that powers endpoints and task queues.
+common:
+- type: GitHubOrganization
+  url: https://github.com/beam-cloud
+- type: LinkedIn
+  url: https://www.linkedin.com/company/beam-cloud
+- type: Website
+  url: https://www.beam.cloud
+- type: Documentation
+  url: https://docs.beam.cloud
+- type: Plans
+  url: plans/beam-cloud-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/beam-cloud-rate-limits.yml
+- type: FinOps
+  url: finops/beam-cloud-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

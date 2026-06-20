@@ -1,0 +1,64 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Beam
+providerId: beam-cloud
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Serverless
+- GPU
+- Python
+- Inference
+- Containers
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Beam governs workloads primarily through container concurrency limits rather than
+  classic per-minute request quotas. Each usage tier caps the number of GPU and CPU
+  containers that may run simultaneously (Developer 5 GPU / 30 CPU, Team 50 GPU /
+  1,000 CPU, Growth custom / unlimited), and the platform autoscales deployments up
+  to those ceilings. Synchronous web endpoints are additionally bound by an
+  invocation time limit of roughly 180 seconds, beyond which work should move to
+  asynchronous task queues.
+notes: >-
+  Concurrency ceilings come from the Beam pricing tiers; per-endpoint autoscaling,
+  warm/keep-alive, and any platform-level request throttling should be verified in
+  the Beam dashboard and docs during reconciliation.
+sources:
+- https://www.beam.cloud/pricing
+- https://docs.beam.cloud/v2/scaling/concurrent-inputs
+- https://docs.beam.cloud/v2/endpoint/overview
+responseCodes:
+  throttled: 429
+limits:
+- name: GPU Container Concurrency
+  scope: account
+  metric: containers
+  limit: '5 (Developer) / 50 (Team) / custom (Growth)'
+  notes: Maximum number of GPU containers running concurrently per tier.
+- name: CPU Container Concurrency
+  scope: account
+  metric: containers
+  limit: '30 (Developer) / 1000 (Team) / unlimited (Growth)'
+  notes: Maximum number of CPU containers running concurrently per tier.
+- name: Synchronous Endpoint Timeout
+  scope: endpoint
+  metric: seconds
+  limit: ~180
+  notes: Web endpoints target synchronous work under ~180 seconds; longer work belongs in task queues.
+- name: Autoscaling
+  scope: deployment
+  metric: containers
+  limit: up to tier concurrency ceiling
+  notes: Deployments scale out per concurrent inputs up to the account's GPU/CPU concurrency limit.
+policies:
+- name: Concurrency-Based Throttling
+  description: New invocations queue or scale containers up to the tier ceiling rather than being rejected outright.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

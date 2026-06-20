@@ -1,0 +1,99 @@
+aid: beam-cloud
+name: Beam
+review:
+  question: Does Beam (beam.cloud) expose a documented public WebSocket API?
+  answer: true
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    Beam documents a real, public WebSocket (wss) surface for realtime
+    endpoints. The docs state a realtime app "will be exposed as a public
+    websocket endpoint" reachable at wss://{deployment-id}.app.beam.cloud and
+    connectable via the native WebSocket API or the Beam JS SDK
+    deployment.realtime() helper. An AsyncAPI 2.6 document was created at
+    asyncapi/beam-cloud-asyncapi.yml modeling this bidirectional WebSocket
+    channel. This is a genuine WebSocket transport, not SSE.
+findings:
+  summary: |
+    Beam is a serverless GPU and Python cloud-runtime platform, not a payments,
+    gaming, or ACH product (see disambiguation below). Its HTTP surface centers
+    on three patterns: (1) synchronous invocation of deployed web endpoints on
+    the shared host https://app.beam.cloud/endpoint/{name} (also /endpoint/{name}/v{n}
+    and /endpoint/id/{id}) or the versioned app subdomain
+    https://{name}-{id}-v{n}.app.beam.cloud; (2) asynchronous task submission to
+    deployed task queues, returning a task_id; and (3) a control-plane Tasks API on
+    https://api.beam.cloud for status (GET /v2/task/{task_id}/) and cancellation
+    (DELETE /v2/task/cancel/). In addition to REST, Beam exposes a documented public
+    WebSocket transport for realtime endpoints at wss://{deployment-id}.app.beam.cloud.
+    All surfaces authenticate with an Authorization: Bearer <TOKEN> header (the
+    task-queue submit example in the docs also shows Basic auth as an accepted form).
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://app.beam.cloud
+      documented: true
+      note: Synchronous endpoint invocation and task-queue submission on the shared invocation host.
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.beam.cloud
+      documented: true
+      note: Control-plane Tasks API for status and cancellation.
+    - protocol: WebSocket
+      scheme: wss
+      baseURL: wss://{deployment-id}.app.beam.cloud
+      documented: true
+      note: Public bidirectional WebSocket for realtime endpoints; modeled in AsyncAPI.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: Realtime streaming is delivered over WebSocket, not Server-Sent Events.
+  endpointsConfirmedRest:
+    - POST https://app.beam.cloud/endpoint/{name}
+    - POST https://app.beam.cloud/endpoint/{name}/v{version}
+    - POST https://app.beam.cloud/endpoint/id/{id}
+    - POST https://{name}-{id}-v{n}.app.beam.cloud
+    - POST https://app.beam.cloud/taskqueue/{name}
+    - GET  https://api.beam.cloud/v2/task/{task_id}/
+    - DELETE https://api.beam.cloud/v2/task/cancel/
+  endpointsConfirmedWebSocket:
+    - wss://{deployment-id}.app.beam.cloud
+  disambiguation: |
+    This profile covers Beam at beam.cloud (serverless GPU / Python cloud runtime,
+    GitHub org beam-cloud, OSS engine beta9). It is NOT: Beam the payments/checkout
+    company (beamcheckout / trybeam), Beamable the game backend platform, or Beam the
+    ACH/payments banking API. Those are unrelated companies that happen to share the
+    "Beam" name.
+sources:
+  - url: https://docs.beam.cloud/v2/endpoint/overview
+    type: Documentation
+    note: Web endpoint deployment and versioned app-subdomain invocation pattern.
+  - url: https://docs.beam.cloud/v2/getting-started/quickstart
+    type: Documentation
+    note: Shows POST https://app.beam.cloud/endpoint/{name} with Authorization Bearer.
+  - url: https://docs.beam.cloud/v2/task-queue/running-tasks
+    type: Documentation
+    note: Task-queue submit returns task_id; result polled from control-plane API.
+  - url: https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status
+    type: APIReference
+    note: GET https://api.beam.cloud/v2/task/{task_id}/ for status and metadata.
+  - url: https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-cancel
+    type: APIReference
+    note: DELETE https://api.beam.cloud/v2/task/cancel/ with a task_ids list body.
+  - url: https://docs.beam.cloud/v2/endpoint/realtime
+    type: Documentation
+    note: Public WebSocket realtime endpoint at wss://{deployment-id}.app.beam.cloud.
+  - url: https://www.beam.cloud/pricing
+    type: Pricing
+    note: Per-second CPU/RAM/GPU serverless rates and per-hour on-demand GPU rates.
+actions:
+  asyncapiPath: asyncapi/beam-cloud-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    A real public WebSocket surface is documented for realtime endpoints, so an
+    AsyncAPI 2.6 document was authored describing the wss channel with WebSocket
+    server protocol and binding metadata, ensuring the transport is represented
+    accurately as WebSocket (not SSE).
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

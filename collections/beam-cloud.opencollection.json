@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Beam API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Web Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invoke a deployed web endpoint by name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously invoke a deployed Python function exposed as a web endpoint, addressed by name on the shared invocation host."
+        },
+        {
+          "info": {
+            "name": "Invoke a specific version of a deployed web endpoint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/:name/v:version",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed endpoint."
+              },
+              {
+                "name": "version",
+                "value": "1",
+                "type": "path",
+                "description": "The deployment version number."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke a specific deployment version of a named web endpoint, e.g. /endpoint/zonos-tts/v1."
+        },
+        {
+          "info": {
+            "name": "Invoke a deployed web endpoint by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/id/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique id of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously invoke a deployed endpoint addressed by its unique deployment id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Task Queues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit an asynchronous task to a deployed task queue.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/taskqueue/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed task queue."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enqueue an asynchronous task on a deployed TaskQueue. Returns a task_id used to poll status or correlate the callback."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get task status and metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.beam.cloud/v2/task/:task_id/",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique id of the task."
+              }
+            ]
+          },
+          "docs": "Retrieve the current status, timing, container details, and outputs for a previously submitted task."
+        },
+        {
+          "info": {
+            "name": "Cancel one or more tasks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.beam.cloud/v2/task/cancel/",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"task_ids\": [\"\"]\n}"
+            }
+          },
+          "docs": "Cancel a list of running or pending tasks by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

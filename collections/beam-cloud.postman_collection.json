@@ -1,0 +1,279 @@
+{
+  "info": {
+    "name": "Beam API",
+    "description": "Documented Beam (beam.cloud) HTTP surfaces: synchronous web-endpoint invocation, asynchronous task-queue submission, and the control-plane Tasks API. Authenticate with an Authorization: Bearer <TOKEN> header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "invokeUrl",
+      "value": "https://app.beam.cloud"
+    },
+    {
+      "key": "apiUrl",
+      "value": "https://api.beam.cloud"
+    }
+  ],
+  "item": [
+    {
+      "name": "Web Endpoints",
+      "item": [
+        {
+          "name": "Invoke a deployed web endpoint by name.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{invokeUrl}}/endpoint/:name",
+              "host": [
+                "{{invokeUrl}}"
+              ],
+              "path": [
+                "endpoint",
+                ":name"
+              ],
+              "variable": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "The name of the deployed endpoint."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"x\": 12\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Synchronously invoke a deployed Python function exposed as a web endpoint, addressed by name on the shared invocation host."
+          },
+          "response": []
+        },
+        {
+          "name": "Invoke a specific version of a deployed web endpoint.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{invokeUrl}}/endpoint/:name/v:version",
+              "host": [
+                "{{invokeUrl}}"
+              ],
+              "path": [
+                "endpoint",
+                ":name",
+                "v:version"
+              ],
+              "variable": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "The name of the deployed endpoint."
+                },
+                {
+                  "key": "version",
+                  "value": "1",
+                  "description": "The deployment version number."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Invoke a specific deployment version of a named web endpoint, e.g. /endpoint/zonos-tts/v1."
+          },
+          "response": []
+        },
+        {
+          "name": "Invoke a deployed web endpoint by id.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{invokeUrl}}/endpoint/id/:id",
+              "host": [
+                "{{invokeUrl}}"
+              ],
+              "path": [
+                "endpoint",
+                "id",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "The unique id of the deployment."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Synchronously invoke a deployed endpoint addressed by its unique deployment id."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Task Queues",
+      "item": [
+        {
+          "name": "Submit an asynchronous task to a deployed task queue.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{invokeUrl}}/taskqueue/:name",
+              "host": [
+                "{{invokeUrl}}"
+              ],
+              "path": [
+                "taskqueue",
+                ":name"
+              ],
+              "variable": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "The name of the deployed task queue."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Enqueue an asynchronous task on a deployed TaskQueue. Returns a task_id used to poll status or correlate the callback."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get task status and metadata.",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/v2/task/:task_id/",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "v2",
+                "task",
+                ":task_id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": "",
+                  "description": "The unique id of the task."
+                }
+              ]
+            },
+            "description": "Retrieve the current status, timing, container details, and outputs for a previously submitted task."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel one or more tasks.",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{apiUrl}}/v2/task/cancel/",
+              "host": [
+                "{{apiUrl}}"
+              ],
+              "path": [
+                "v2",
+                "task",
+                "cancel",
+                ""
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task_ids\": [\"\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Cancel a list of running or pending tasks by id."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

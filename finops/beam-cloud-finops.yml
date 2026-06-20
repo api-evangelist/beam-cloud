@@ -1,0 +1,115 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Beam
+providerId: beam-cloud
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Serverless
+- GPU
+- Python
+- Inference
+- Containers
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Beam (beam.cloud) spend. Beam bills serverless and sandbox compute
+  per second - CPU per core-second, RAM per GB-second, and serverless GPUs per
+  GPU-second - while dedicated on-demand GPU containers are metered per hour. Usage
+  tiers (Developer, Team, Growth) add a subscription line and $30 of monthly credits;
+  the dominant cost driver is per-second GPU container runtime, so cold-start speed,
+  autoscaling, and idle keep-alive directly shape the bill.
+notes: >-
+  Per-second and per-hour rates are subject to change and vary by GPU type and
+  region; verify against https://www.beam.cloud/pricing during reconciliation.
+sources:
+- https://www.beam.cloud/pricing
+- https://docs.beam.cloud
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Beam
+serviceCategory: Compute
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Beam
+  ServiceCategory: Compute
+  ProviderName: Beam
+  PublisherName: Beam
+  InvoiceIssuerName: Beam
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: cpu_core_seconds
+  description: CPU core-seconds consumed by serverless functions, endpoints, task queues, and sandboxes, billed per core per second.
+  unit: core_seconds
+  aggregation: sum
+  dimensions:
+  - account
+  - app
+  - container
+- name: ram_gb_seconds
+  description: Memory GB-seconds consumed by running containers, billed per GB per second.
+  unit: gb_seconds
+  aggregation: sum
+  dimensions:
+  - account
+  - app
+  - container
+- name: gpu_seconds_serverless
+  description: Serverless GPU-seconds (e.g. RTX 4090, A10G) consumed by autoscaled containers, billed per second.
+  unit: gpu_seconds
+  aggregation: sum
+  dimensions:
+  - account
+  - app
+  - gpu_type
+- name: gpu_hours_on_demand
+  description: Dedicated on-demand GPU container hours (e.g. H100, A100, B200), billed per hour.
+  unit: hours
+  aggregation: sum
+  dimensions:
+  - account
+  - app
+  - gpu_type
+- name: subscription_fee
+  description: Monthly usage-tier subscription (Developer $0, Team $89, Growth custom), inclusive of $30 monthly credits.
+  unit: months
+  aggregation: sum
+  dimensions:
+  - account
+  - tier
+- name: seats
+  description: Additional team seats beyond those included in the tier, billed per seat per month.
+  unit: seats
+  aggregation: sum
+  dimensions:
+  - account
+  - tier
+principles:
+- name: Visibility
+  description: Track per-second CPU/RAM/GPU burn per app and container; watch GPU-seconds as the primary cost driver.
+- name: Allocation
+  description: Tag apps/deployments per workload or team and map container usage to cost centers.
+- name: Optimization
+  description: Use fast cold starts and tight autoscaling to avoid idle GPU-seconds; right-size GPU type per workload; move long jobs to task queues and prefer cheaper GPUs (RTX 4090/A10G) when sufficient.
+- name: Accountability
+  description: Assign owners per app/key; review per-second compute spend monthly against the $30 credit and tier budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

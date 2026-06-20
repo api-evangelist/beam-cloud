@@ -1,0 +1,93 @@
+asyncapi: '2.6.0'
+id: 'urn:cloud:beam:realtime:websocket'
+info:
+  title: Beam Realtime Endpoints (WebSocket)
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 description of Beam's **realtime endpoint** surface.
+
+    Unlike the synchronous REST web endpoints, a Beam realtime app is deployed
+    and, per the docs (https://docs.beam.cloud/v2/endpoint/realtime), "will be
+    exposed as a public websocket endpoint." Clients connect with the native
+    WebSocket API or the Beam JavaScript SDK `deployment.realtime()` helper.
+
+    This is a genuine bidirectional WebSocket transport (wss), not Server-Sent
+    Events. Messages are exchanged in both directions over the open connection:
+    the client sends input payloads and the server streams output payloads
+    produced by the deployed Python handler.
+
+    Synchronous endpoints, task queues, and the control-plane Tasks API are
+    modeled in the companion OpenAPI document at `openapi/beam-cloud-openapi.yml`.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Beam Terms of Service
+    url: https://www.beam.cloud/terms
+  x-transport-notes:
+    transport: WebSocket
+    protocol: wss
+    direction: bidirectional (client and server)
+    triggeredBy: 'WebSocket connect to wss://{deployment-id}.app.beam.cloud'
+    isWebSocket: true
+    source: https://docs.beam.cloud/v2/endpoint/realtime
+defaultContentType: application/json
+servers:
+  realtime:
+    url: '{deploymentId}.app.beam.cloud'
+    protocol: wss
+    description: |
+      Public WebSocket host for a deployed Beam realtime endpoint. The
+      deploymentId is the unique id of the deployed app.
+    variables:
+      deploymentId:
+        description: Unique id of the deployed realtime endpoint.
+        default: '1c0f0cbe-e0d1-49ae-a556-5daffe23eb4c'
+    security:
+      - bearerAuth: []
+channels:
+  /:
+    description: |
+      The realtime WebSocket channel. After the client opens the connection
+      (authenticating with a Beam Bearer token), it may publish input messages
+      and subscribe to output messages streamed back from the deployed handler.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+    publish:
+      operationId: sendRealtimeInput
+      summary: Send an input payload to the deployed realtime handler.
+      message:
+        $ref: '#/components/messages/RealtimeInput'
+    subscribe:
+      operationId: receiveRealtimeOutput
+      summary: Receive output payloads streamed from the realtime handler.
+      message:
+        $ref: '#/components/messages/RealtimeOutput'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: 'Beam API token'
+      description: |
+        Beam bearer token. Provide `Authorization: Bearer <TOKEN>` when opening
+        the WebSocket connection.
+  messages:
+    RealtimeInput:
+      name: RealtimeInput
+      title: Realtime input message
+      summary: A JSON payload sent from the client into the deployed handler.
+      contentType: application/json
+      payload:
+        type: object
+        additionalProperties: true
+    RealtimeOutput:
+      name: RealtimeOutput
+      title: Realtime output message
+      summary: A JSON payload streamed from the handler back to the client.
+      contentType: application/json
+      payload:
+        type: object
+        additionalProperties: true

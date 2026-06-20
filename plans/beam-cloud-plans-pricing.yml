@@ -1,0 +1,299 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Beam
+providerId: beam-cloud
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Serverless
+- GPU
+- Python
+- Inference
+- Containers
+- Plans
+description: >-
+  Beam combines usage-tier subscriptions with pay-per-second compute. Serverless
+  and sandbox workloads bill by the second for CPU cores, RAM, and attached GPUs,
+  while dedicated on-demand GPU containers are quoted per hour. Every tier includes
+  $30 in monthly credits, unlimited apps, storage volumes, custom images, and API
+  requests; tiers differ mainly by GPU/CPU container concurrency, seats, and log
+  retention.
+notes: >-
+  Per-second and per-hour rates reflect the Beam pricing page as of 2026-06-20 and
+  start-from quotes that vary by region and availability; verify the current full
+  GPU catalog and rates at https://www.beam.cloud/pricing during reconciliation.
+sources:
+- https://www.beam.cloud/pricing
+- https://docs.beam.cloud
+plans:
+- id: beam-developer
+  name: Developer
+  type: subscription
+  description: >-
+    Free tier with $30 monthly credits, 1 seat, up to 5 GPU containers and 30 CPU
+    containers of concurrency, and 30-day log retention.
+  entries:
+  - label: Monthly Subscription
+    name: developer_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0/mo (includes $30 monthly credits)
+    userMultiplied: false
+  - label: GPU Container Concurrency
+    name: developer_gpu_concurrency
+    type: limit
+    metric: containers
+    limit: 5
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: CPU Container Concurrency
+    name: developer_cpu_concurrency
+    type: limit
+    metric: containers
+    limit: 30
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Web Endpoints
+  - name: Task Queues
+  - name: Sandboxes
+  - name: Storage Volumes
+- id: beam-team
+  name: Team
+  type: subscription
+  description: >-
+    $89/mo with $30 monthly credits, 3 seats included (+$25 each), up to 50 GPU
+    containers and 1,000 CPU containers of concurrency, and 30-day log retention.
+  entries:
+  - label: Monthly Subscription
+    name: team_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $89/mo (includes $30 monthly credits)
+    userMultiplied: false
+  - label: Additional Seat
+    name: team_seat
+    type: flat
+    metric: seats
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $25/seat beyond 3 included
+    userMultiplied: true
+  - label: GPU Container Concurrency
+    name: team_gpu_concurrency
+    type: limit
+    metric: containers
+    limit: 50
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: CPU Container Concurrency
+    name: team_cpu_concurrency
+    type: limit
+    metric: containers
+    limit: 1000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Web Endpoints
+  - name: Task Queues
+  - name: Sandboxes
+  - name: Storage Volumes
+- id: beam-growth
+  name: Growth
+  type: enterprise
+  description: >-
+    Custom contract with $30 monthly credits, unlimited seats, custom GPU
+    concurrency, unlimited CPU concurrency, and 1-year log retention. Contact Beam.
+  entries:
+  - label: Enterprise Agreement
+    name: growth_contract
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom GPU Concurrency
+  - name: Unlimited CPU Concurrency
+  - name: 1-Year Log Retention
+- id: beam-serverless-compute
+  name: Serverless and Sandbox Compute
+  type: usage
+  description: >-
+    Pay-per-second metering for serverless functions, endpoints, task queues, and
+    sandboxes. CPU and RAM are billed per core-second and per GB-second; serverless
+    GPUs are billed per second.
+  entries:
+  - label: CPU
+    name: cpu_core_second
+    type: usage
+    metric: core_seconds
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $0.0000528 per core per second
+    userMultiplied: false
+  - label: RAM
+    name: ram_gb_second
+    type: usage
+    metric: gb_seconds
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $0.0000056 per GB per second
+    userMultiplied: false
+  - label: RTX 4090 (serverless)
+    name: gpu_rtx4090_second
+    type: usage
+    metric: gpu_seconds
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $0.000192 per second
+    userMultiplied: false
+  - label: A10G (serverless)
+    name: gpu_a10g_second
+    type: usage
+    metric: gpu_seconds
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $0.000292 per second
+    userMultiplied: false
+  elements:
+  - name: Web Endpoints
+  - name: Task Queues
+  - name: Sandboxes
+- id: beam-on-demand-gpu
+  name: On-Demand GPU Containers
+  type: usage
+  description: >-
+    Dedicated on-demand GPU containers billed per hour, starting-from rates by GPU
+    type.
+  entries:
+  - label: B200 SXM6
+    name: gpu_b200
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $3.93/hr
+    userMultiplied: false
+  - label: H200 SXM5
+    name: gpu_h200
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $1.99/hr
+    userMultiplied: false
+  - label: H100 PCIe
+    name: gpu_h100
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $1.74/hr
+    userMultiplied: false
+  - label: A100 80GB SXM4
+    name: gpu_a100_80gb
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $1.30/hr
+    userMultiplied: false
+  - label: RTX PRO 6000 PCIe
+    name: gpu_rtx_pro_6000
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $1.04/hr
+    userMultiplied: false
+  - label: L40S PCIe
+    name: gpu_l40s
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $0.72/hr
+    userMultiplied: false
+  - label: RTX 5090 PCIe
+    name: gpu_rtx5090
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $0.68/hr
+    userMultiplied: false
+  - label: A6000 PCIe
+    name: gpu_a6000
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $0.51/hr
+    userMultiplied: false
+  - label: RTX 4090 PCIe
+    name: gpu_rtx4090_hr
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $0.42/hr
+    userMultiplied: false
+  elements:
+  - name: Dedicated GPU Containers
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
