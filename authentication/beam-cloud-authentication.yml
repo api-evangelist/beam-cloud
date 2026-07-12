@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/beam-cloud-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: 'Beam API token passed as `Authorization: Bearer <TOKEN>`. Generate tokens in
+    the Beam dashboard or with the Beam CLI.'
+  sources:
+  - openapi/beam-cloud-openapi.yml
