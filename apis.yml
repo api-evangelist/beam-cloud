@@ -125,6 +125,8 @@ apis:
     external S3 buckets. Driven primarily through the Beam Python/TypeScript SDK and
     CLI on top of the same container runtime that powers endpoints and task queues.
 common:
+- type: AgenticAccess
+  url: agentic-access/beam-cloud-agentic-access.yml
 - type: DomainSecurity
   url: security/beam-cloud-domain-security.yml
 - type: Authentication
