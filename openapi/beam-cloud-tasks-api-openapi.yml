@@ -1,0 +1,120 @@
+openapi: 3.0.1
+info:
+  title: Beam Task Queues Tasks API
+  description: 'Specification of the documented Beam (beam.cloud) HTTP surfaces: synchronous invocation of deployed web endpoints, asynchronous task submission to deployed task queues, and the control-plane Tasks API for querying status and cancelling tasks. Beam deployments are created from Python with the Beam SDK/CLI; this spec covers the resulting HTTP invocation and management patterns only.'
+  termsOfService: https://www.beam.cloud/terms
+  contact:
+    name: Beam Support
+    url: https://docs.beam.cloud
+  version: '2.0'
+servers:
+- url: https://app.beam.cloud
+  description: Invocation host for deployed endpoints and task queues (named or id path)
+- url: https://api.beam.cloud
+  description: Control-plane host for the Tasks management API
+security:
+- bearerAuth: []
+tags:
+- name: Tasks
+paths:
+  /v2/task/{task_id}/:
+    get:
+      operationId: getTaskStatus
+      tags:
+      - Tasks
+      summary: Get task status and metadata
+      description: Retrieve the current status, timing, container details, and outputs for a previously submitted task. Served by the control-plane host api.beam.cloud.
+      servers:
+      - url: https://api.beam.cloud
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        description: The unique id of the task.
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Task status and metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+        '404':
+          description: Task not found.
+      security:
+      - bearerAuth: []
+  /v2/task/cancel/:
+    delete:
+      operationId: cancelTasks
+      tags:
+      - Tasks
+      summary: Cancel one or more tasks
+      description: Cancel a list of running or pending tasks by id. Served by the control-plane host api.beam.cloud.
+      servers:
+      - url: https://api.beam.cloud
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+              - task_ids
+            example:
+              task_ids:
+              - 55108039-e3bf-409b-bad5-f4982b2f1c02
+      responses:
+        '200':
+          description: Tasks cancelled.
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          description: Current task state.
+          enum:
+          - PENDING
+          - RUNNING
+          - COMPLETE
+          - ERROR
+          - CANCELLED
+          - TIMEOUT
+        outputs:
+          type: array
+          description: Output artifacts (e.g. files with downloadable URLs).
+          items:
+            type: object
+            additionalProperties: true
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        expires_in:
+          type: integer
+          description: Seconds until the outputs expire.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Beam API token passed as `Authorization: Bearer <TOKEN>`. Generate tokens in the Beam dashboard or with the Beam CLI.'

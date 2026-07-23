@@ -1,0 +1,65 @@
+openapi: 3.0.1
+info:
+  title: Beam Task Queues API
+  description: 'Specification of the documented Beam (beam.cloud) HTTP surfaces: synchronous invocation of deployed web endpoints, asynchronous task submission to deployed task queues, and the control-plane Tasks API for querying status and cancelling tasks. Beam deployments are created from Python with the Beam SDK/CLI; this spec covers the resulting HTTP invocation and management patterns only.'
+  termsOfService: https://www.beam.cloud/terms
+  contact:
+    name: Beam Support
+    url: https://docs.beam.cloud
+  version: '2.0'
+servers:
+- url: https://app.beam.cloud
+  description: Invocation host for deployed endpoints and task queues (named or id path)
+- url: https://api.beam.cloud
+  description: Control-plane host for the Tasks management API
+security:
+- bearerAuth: []
+tags:
+- name: Task Queues
+paths:
+  /taskqueue/{name}:
+    post:
+      operationId: submitTaskByName
+      tags:
+      - Task Queues
+      summary: Submit an asynchronous task to a deployed task queue
+      description: Enqueue an asynchronous task on a deployed TaskQueue, addressed by its name on the shared invocation host (a deployment is equivalently reachable at its app subdomain https://{name}-{id}.app.beam.cloud). The call returns immediately with a task_id; the result is retrieved later from the Tasks management API or delivered to a configured callback_url webhook. Use task queues for long-running work beyond the synchronous endpoint window.
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: The name of the deployed task queue.
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Task accepted and enqueued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSubmitResponse'
+        '401':
+          description: Unauthorized - missing or invalid Bearer token.
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    TaskSubmitResponse:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+          description: Identifier used to poll status or correlate the callback.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Beam API token passed as `Authorization: Bearer <TOKEN>`. Generate tokens in the Beam dashboard or with the Beam CLI.'
