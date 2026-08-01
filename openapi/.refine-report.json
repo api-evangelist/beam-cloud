@@ -1,0 +1,18 @@
+{
+  "provider": "beam-cloud",
+  "sources": [
+    "beam-cloud-task-queues-api-openapi.yml",
+    "beam-cloud-tasks-api-openapi.yml",
+    "beam-cloud-web-endpoints-api-openapi.yml"
+  ],
+  "outputs": [
+    "beam-cloud-task-queues-api-openapi.yml",
+    "beam-cloud-tasks-api-openapi.yml",
+    "beam-cloud-web-endpoints-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
