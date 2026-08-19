@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Beam Task Queues Tasks API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get task status and metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.beam.cloud/v2/task/:task_id/",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique id of the task."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the current status, timing, container details, and outputs for a previously submitted task. Served by the control-plane host api.beam.cloud."
+        },
+        {
+          "info": {
+            "name": "Cancel one or more tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.beam.cloud/v2/task/cancel/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a list of running or pending tasks by id. Served by the control-plane host api.beam.cloud."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

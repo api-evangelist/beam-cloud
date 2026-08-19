@@ -1,0 +1,222 @@
+{
+  "item": [
+    {
+      "id": "0b63ec15-7b38-486c-8e43-1a175749463a",
+      "name": "Task Queues",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "030c8ef1-dfa8-44bc-989d-a81bb58ebd0d",
+          "name": "Submit an asynchronous task to a deployed task queue",
+          "request": {
+            "name": "Submit an asynchronous task to a deployed task queue",
+            "description": {
+              "content": "Enqueue an asynchronous task on a deployed TaskQueue, addressed by its name on the shared invocation host (a deployment is equivalently reachable at its app subdomain https://{name}-{id}.app.beam.cloud). The call returns immediately with a task_id; the result is retrieved later from the Tasks management API or delivered to a configured callback_url webhook. Use task queues for long-running work beyond the synchronous endpoint window.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "taskqueue",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) The name of the deployed task queue."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": 2651\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7559a290-62b4-4877-9b41-dbe44b83b76b",
+              "name": "Task accepted and enqueued.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "taskqueue",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) The name of the deployed task queue."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"string\",\n  \"key_1\": 6772,\n  \"key_2\": false,\n  \"key_3\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"8762479a-44b8-a012-6c60-874df7a3aff1\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de339386-0370-4eeb-9b91-f8ef628a2746",
+              "name": "Unauthorized - missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "taskqueue",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) The name of the deployed task queue."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"string\",\n  \"key_1\": 6772,\n  \"key_2\": false,\n  \"key_3\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.beam.cloud",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "18afac28-3a39-4635-ac7f-768365dc724d",
+    "name": "Beam Task Queues API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of the documented Beam (beam.cloud) HTTP surfaces: synchronous invocation of deployed web endpoints, asynchronous task submission to deployed task queues, and the control-plane Tasks API for querying status and cancelling tasks. Beam deployments are created from Python with the Beam SDK/CLI; this spec covers the resulting HTTP invocation and management patterns only.\n\nContact Support:\n Name: Beam Support",
+      "type": "text/plain"
+    }
+  }
+}

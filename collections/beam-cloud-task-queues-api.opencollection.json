@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Beam Task Queues API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Task Queues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit an asynchronous task to a deployed task queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/taskqueue/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed task queue."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enqueue an asynchronous task on a deployed TaskQueue, addressed by its name on the shared invocation host (a deployment is equivalently reachable at its app subdomain https://{name}-{id}.app.beam.cloud). The call returns immediately with a task_id; the result is retrieved later from the Tasks management API or delivered to a configured callback_url webhook. Use task queues for long-running work beyond the synchronous endpoint window."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

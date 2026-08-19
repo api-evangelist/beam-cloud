@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Beam Task Queues Web Endpoints API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Web Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invoke a deployed web endpoint by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Synchronously invoke a deployed Python function exposed as a web endpoint, addressed by its deployment name on the shared invocation host. Endpoints are intended for synchronous work that completes within roughly 180 seconds. A deployment is also reachable at its versioned app subdomain (https://{name}-{id}-v{n}.app.beam.cloud)."
+        },
+        {
+          "info": {
+            "name": "Invoke a specific version of a deployed web endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/:name/v:version",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployed endpoint."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "The deployment version number."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Invoke a specific deployment version of a named web endpoint, e.g. /endpoint/zonos-tts/v1."
+        },
+        {
+          "info": {
+            "name": "Invoke a deployed web endpoint by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.beam.cloud/endpoint/id/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique id of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Synchronously invoke a deployed endpoint addressed by its unique deployment id, e.g. /endpoint/id/55108039-e3bf-409b-bad5-f4982b2f1c02. Commonly used for temporary or ephemeral deployments."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
