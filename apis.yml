@@ -6,6 +6,18 @@ description: Beam (beam.cloud) is a serverless GPU and Python cloud-runtime plat
   You write ordinary Python, decorate it, and Beam deploys it as a web endpoint, a
   task queue, a scheduled job, or a secure sandbox running on on-demand CPU and GPU
   containers with per-second billing, rapid cold starts, and automatic scaling.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
