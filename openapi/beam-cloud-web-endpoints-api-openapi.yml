@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Beam Task Queues Web Endpoints API
+  title: Beam Web Endpoints API
   description: 'Specification of the documented Beam (beam.cloud) HTTP surfaces: synchronous invocation of deployed web endpoints, asynchronous task submission to deployed task queues, and the control-plane Tasks API for querying status and cancelling tasks. Beam deployments are created from Python with the Beam SDK/CLI; this spec covers the resulting HTTP invocation and management patterns only.'
   termsOfService: https://www.beam.cloud/terms
   contact:

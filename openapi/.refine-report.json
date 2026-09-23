@@ -1,9 +1,7 @@
 {
   "provider": "beam-cloud",
   "sources": [
-    "beam-cloud-task-queues-api-openapi.yml",
-    "beam-cloud-tasks-api-openapi.yml",
-    "beam-cloud-web-endpoints-api-openapi.yml"
+    "_original/beam-cloud-openapi.yml"
   ],
   "outputs": [
     "beam-cloud-task-queues-api-openapi.yml",
@@ -13,6 +11,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "beam-cloud-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "beam-cloud-openapi.yml: declared missing tag: Task Queues",
+    "beam-cloud-openapi.yml: declared missing tag: Tasks",
+    "beam-cloud-openapi.yml: declared missing tag: Web Endpoints",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "beam-cloud-task-queues-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "beam-cloud-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "beam-cloud-web-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
