@@ -8,15 +8,19 @@ description: Beam (beam.cloud) is a serverless GPU and Python cloud-runtime plat
   containers with per-second billing, rapid cold starts, and automatic scaling.
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - beam-cloud/beta9
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -43,6 +47,7 @@ tags:
 - Python
 - Inference
 - Containers
+- Real-Time
 created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.23'
