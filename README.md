@@ -1,4 +1,4 @@
-# Beam (beam-cloud)
+# Beam
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,123 +66,138 @@
 
 Beam (beam.cloud) is a serverless GPU and Python cloud-runtime platform. You write ordinary Python, decorate it, and Beam deploys it as a web endpoint, a task queue, a scheduled job, or a secure sandbox running on on-demand CPU and GPU containers with per-second billing, rapid cold starts, and automatic scaling.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/beam-cloud/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/beam-cloud/refs/heads/main/apis.yml)
+**Areas:** Serverless · GPU · Python · Inference · Containers · Real-Time
 
-## Tags
+## Beam on APIs.io
 
-- Serverless
-- GPU
-- Python
-- Inference
-- Containers
+Everything profiled for Beam is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/beam-cloud/](https://apis.io/providers/beam-cloud/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (3)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Beam Task Queues API](https://apis.io/apis/beam-cloud/beam-cloud-task-queues-api/) — The Task Queues API from Beam — 1 operation(s) for task queues.
+- [Beam Tasks API](https://apis.io/apis/beam-cloud/beam-cloud-tasks-api/) — The Tasks API from Beam — 2 operation(s) for tasks.
+- [Beam Web Endpoints API](https://apis.io/apis/beam-cloud/beam-cloud-web-endpoints-api/) — The Web Endpoints API from Beam — 3 operation(s) for web endpoints.
 
-## APIs
+### Published properties
 
-### Beam Web Endpoints API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Synchronous invocation of deployed Python functions exposed as REST web endpoints. Each deployment is reachable both by a versioned app subdomain (https://{name}-{id}-v{n}.app.beam.cloud) and by a named or id path on the shared host (https://app.beam.cloud/endpoint/{name} or /endpoint/id/{id}). Endpoints are for synchronous work completing within ~180 seconds; Bearer token auth.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://docs.beam.cloud/v2/endpoint/overview](https://docs.beam.cloud/v2/endpoint/overview)
-- **Base URL:** `https://app.beam.cloud`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Beam Realtime Endpoints (WebSocket)](https://apis.io/asyncapis/beam-cloud/beam-cloud-asyncapi/)
 
-- Web Endpoints
-- Function Invocation
-- Serverless
+#### Event channels (1)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://docs.beam.cloud/v2/endpoint/overview)
-- [API Reference](https://docs.beam.cloud/v2/getting-started/quickstart)
-- [OpenAPI](openapi/beam-cloud-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/beam-cloud.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/beam-cloud.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/beam-cloud-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [GitHub](https://github.com/beam-cloud/beta9)
+- [/](https://apis.io/channels/beam-cloud/untitled/)
 
-### Beam Task Queues API
+#### Agentic access (1)
 
-Asynchronous task submission for long-running work. POST to a deployed task-queue app returns a task_id; results and state are then polled from the control-plane Tasks API (GET https://api.beam.cloud/v2/task/{task_id}/) or delivered to a configured callback_url webhook.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://docs.beam.cloud/v2/task-queue/running-tasks](https://docs.beam.cloud/v2/task-queue/running-tasks)
-- **Base URL:** `https://api.beam.cloud`
+- [Beam Cloud Agentic Access](https://apis.io/agentic-access/beam-cloud/beam-cloud-agentic-access/)
 
-#### Tags
+#### Collections (4)
 
-- Task Queues
-- Async
-- Background Jobs
+Postman and Open Collection request collections.
 
-#### Properties
+- [Beam API](https://apis.io/collections/beam-cloud/open-beam-cloud/)
+- [Beam Task Queues API](https://apis.io/collections/beam-cloud/open-beam-cloud-task-queues-api/)
+- [Beam Task Queues Tasks API](https://apis.io/collections/beam-cloud/open-beam-cloud-tasks-api/)
+- [Beam Task Queues Web Endpoints API](https://apis.io/collections/beam-cloud/open-beam-cloud-web-endpoints-api/)
 
-- [Documentation](https://docs.beam.cloud/v2/task-queue/running-tasks)
-- [API Reference](https://docs.beam.cloud/v2/task-queue/query-status)
-- [OpenAPI](openapi/beam-cloud-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/beam-cloud.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/beam-cloud.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/beam-cloud/beta9)
+#### Governance rules (1)
 
-### Beam Tasks Management API
+Spectral rulesets for the provider's contracts.
 
-Control-plane REST API on api.beam.cloud for retrieving task status and metadata (GET /v2/task/{task_id}/) and cancelling one or more running tasks (DELETE /v2/task/cancel/). Bearer token auth; used to manage deployments and the lifecycle of async invocations.
+- [Beam — asyncapi rules](https://apis.io/rules/beam-cloud/beam-cloud-asyncapi-spectral-rules/)
 
-- **Human URL:** [https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status](https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status)
-- **Base URL:** `https://api.beam.cloud`
+#### Security (2)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Tasks
-- Management
-- Deployments
+- [Beam Cloud Authentication](https://apis.io/security/beam-cloud/beam-cloud-authentication/)
+- [Beam Cloud Domain Security](https://apis.io/security/beam-cloud/beam-cloud-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-status)
-- [API Reference](https://docs.beam.cloud/v2/reference/api-docs/tasks/tasks-cancel)
-- [OpenAPI](openapi/beam-cloud-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/beam-cloud.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/beam-cloud.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/beam-cloud/beta9)
+Published plans, tiers and prices.
 
-### Beam Sandboxes and Volumes API
+- [Beam Cloud Plans Pricing](https://apis.io/plans/beam-cloud/beam-cloud-plans-pricing/)
 
-Secure, programmable sandbox containers for arbitrary code execution (filesystem and process operations) plus distributed storage Volumes and mounted external S3 buckets. Driven primarily through the Beam Python/TypeScript SDK and CLI on top of the same container runtime that powers endpoints and task queues.
+#### Rate limits (1)
 
-- **Human URL:** [https://docs.beam.cloud/v2/sandbox/overview](https://docs.beam.cloud/v2/sandbox/overview)
-- **Base URL:** `https://app.beam.cloud`
+Published request limits.
 
-#### Tags
+- [Beam Cloud Rate Limits](https://apis.io/rate-limits/beam-cloud/beam-cloud-rate-limits/)
 
-- Sandboxes
-- Volumes
-- Code Execution
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://docs.beam.cloud/v2/sandbox/overview)
-- [API Reference](https://docs.beam.cloud/v2/data/volume)
-- [OpenAPI](openapi/beam-cloud-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/beam-cloud.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/beam-cloud.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [GitHub](https://github.com/beam-cloud/beta9)
+- [Beam Cloud Finops](https://apis.io/finops/beam-cloud/beam-cloud-finops/)
 
-## Common Properties
+## Where to find this API
 
-- [GitHub Organization](https://github.com/beam-cloud)
-- [LinkedIn](https://www.linkedin.com/company/beam-cloud)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.beam.cloud)
 - [Documentation](https://docs.beam.cloud)
-- [Plans](plans/beam-cloud-plans-pricing.yml)
-- [Rate Limits](rate-limits/beam-cloud-rate-limits.yml)
-- [Fin Ops](finops/beam-cloud-finops.yml)
+- [Blog](https://www.beam.cloud/blog)
+- [GitHub](https://github.com/beam-cloud)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 30.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 58.3 |
+| Contract governance | 11.4 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 23.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.9** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/beam-cloud/](https://apis.io/providers/beam-cloud/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Beam: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/beam-cloud/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
